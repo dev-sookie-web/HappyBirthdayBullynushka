@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Birthday Surprise</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
   <style>
@@ -474,6 +474,321 @@
       left: 0;
       pointer-events: none;
     }
+
+    /* =========================================================
+       MOBILE / ANDROID RESPONSIVE FIXES
+       Keeps the original desktop design unchanged.
+       ========================================================= */
+
+    html {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      width: 100%;
+      width: 100dvw;
+      min-height: 100vh;
+      min-height: 100dvh;
+      height: 100vh;
+      height: 100dvh;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    /* Phones */
+    @media (max-width: 700px) {
+      .screen {
+        overflow: hidden;
+      }
+
+      /* SCREEN 1 */
+      #screen1 {
+        overflow-y: auto;
+        justify-content: center;
+      }
+
+      .lock-container {
+        width: 100%;
+        max-width: 430px;
+        padding: 18px;
+        gap: 22px;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .polaroid {
+        padding: 10px 10px 22px 10px;
+      }
+
+      .polaroid img {
+        width: min(210px, 58vw);
+        height: min(255px, 70vw);
+      }
+
+      .polaroid p {
+        margin-top: 10px;
+        font-size: 1.5rem;
+      }
+
+      .ribbon {
+        top: -12px;
+        left: -10px;
+        font-size: 2rem;
+      }
+
+      .passcode-box h3 {
+        font-size: 0.78rem;
+        margin-bottom: 10px;
+      }
+
+      .pin-display {
+        gap: 7px;
+        margin-bottom: 16px;
+      }
+
+      .pin-dot {
+        width: 35px;
+        height: 35px;
+        font-size: 1.25rem;
+      }
+
+      .keypad {
+        gap: 10px;
+      }
+
+      .key {
+        width: 52px;
+        height: 52px;
+        font-size: 1.1rem;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* SCREEN 2 */
+      .date-text {
+        font-size: clamp(2rem, 11vw, 4rem);
+        letter-spacing: 1px;
+        padding: 0 15px;
+        white-space: nowrap;
+      }
+
+      /* SCREEN 3 */
+      .loading-container {
+        width: calc(100% - 30px);
+      }
+
+      .loading-container h1 {
+        font-size: 2.2rem;
+      }
+
+      .cake-icon {
+        font-size: 3.5rem;
+      }
+
+      .loading-text {
+        font-size: 0.9rem;
+        max-width: 90vw;
+      }
+
+      .doodle {
+        font-size: 1.4rem;
+      }
+
+      /* SCREEN 4 */
+      .envelope-title {
+        font-size: clamp(2.5rem, 12vw, 3.5rem);
+        margin-bottom: 24px;
+      }
+
+      .envelope {
+        width: min(280px, 78vw);
+        height: min(180px, 50vw);
+      }
+
+      /* SCREEN 5 */
+      #screen5 {
+        padding: 16px;
+        overflow-y: auto;
+      }
+
+      .drama-content {
+        width: min(100%, 600px);
+        max-height: calc(100dvh - 32px);
+        padding: 25px 20px;
+        overflow-y: auto;
+      }
+
+      .drama-content h2 {
+        font-size: clamp(1.7rem, 8vw, 2.2rem);
+      }
+
+      .drama-content p {
+        font-size: 0.95rem;
+      }
+
+      .btn-action {
+        max-width: 100%;
+        padding: 11px 22px;
+      }
+
+      /* SCREEN 6 */
+      #screen6 {
+        padding: 14px;
+        overflow-y: auto;
+        justify-content: flex-start;
+      }
+
+      .letter-card {
+        width: 100%;
+        max-width: 900px;
+        max-height: none;
+        margin: auto;
+        padding: 20px;
+        gap: 18px;
+        flex-direction: column;
+        overflow: visible;
+      }
+
+      .letter-body {
+        width: 100%;
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+
+      .letter-body h3 {
+        font-size: 2rem;
+      }
+
+      .letter-photo {
+        width: 100%;
+        flex: none;
+      }
+
+      .letter-photo img {
+        width: 100%;
+        max-height: 48vh;
+        object-fit: contain;
+      }
+
+      /* SCREEN 7 */
+      #screen7 {
+        padding: 15px;
+      }
+
+      .wish-text {
+        max-width: 95%;
+        font-size: clamp(1.35rem, 7vw, 2rem);
+        line-height: 1.25;
+      }
+
+      .countdown {
+        font-size: clamp(2.3rem, 12vw, 3rem);
+      }
+
+      .cake-wrapper {
+        margin-top: 32px;
+        transform: scale(min(1, 78vw / 220));
+        transform-origin: center;
+      }
+
+      .rainbow-btn {
+        margin-top: 24px;
+        padding: 11px 20px;
+        max-width: 90vw;
+      }
+
+      /* Keep fireworks inside the viewport */
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .floating-hb {
+        max-width: 90vw;
+        text-align: center;
+        font-size: 1rem;
+      }
+    }
+
+    /* Very small phones */
+    @media (max-width: 380px) {
+      .lock-container {
+        gap: 14px;
+        padding: 12px;
+      }
+
+      .polaroid img {
+        width: 180px;
+        height: 220px;
+      }
+
+      .polaroid p {
+        font-size: 1.35rem;
+      }
+
+      .pin-dot {
+        width: 31px;
+        height: 31px;
+      }
+
+      .key {
+        width: 47px;
+        height: 47px;
+      }
+
+      .keypad {
+        gap: 8px;
+      }
+
+      .letter-card {
+        padding: 16px;
+      }
+
+      .letter-body {
+        font-size: 0.82rem;
+      }
+    }
+
+    /* Android landscape phones */
+    @media (max-height: 520px) and (orientation: landscape) {
+      .screen {
+        overflow-y: auto;
+      }
+
+      .lock-container {
+        flex-direction: row;
+        gap: 20px;
+        transform: scale(0.82);
+        transform-origin: center;
+      }
+
+      .polaroid img {
+        width: 170px;
+        height: 205px;
+      }
+
+      .letter-card {
+        flex-direction: row;
+        margin: 15px auto;
+      }
+
+      .letter-photo img {
+        max-height: 70vh;
+      }
+    }
+
   </style>
 </head>
 <body>

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Surprise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background-color: #a82333;
+      color: #fff;
+    }
+
+    .screen {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* Screen 1: Lock Screen */
+    #screen1 {
+      background-color: #a82333;
+    }
+
+    .lock-container {
+      display: flex;
+      gap: 50px;
+      align-items: center;
+      justify-content: center;
+      max-width: 900px;
+      padding: 20px;
+    }
+
+    .polaroid-wrapper {
+      position: relative;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      font-size: 2.5rem;
+      z-index: 10;
+    }
+
+    .polaroid {
+      background: #fff;
+      padding: 15px 15px 30px 15px;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      color: #333;
+      transform: rotate(-3deg);
+    }
+
+    .polaroid img {
+      width: 260px;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .polaroid p {
+      margin-top: 15px;
+      font-family: 'Sacramento', cursive;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .passcode-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .passcode-box h3 {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      opacity: 0.9;
+    }
+
+    .pin-display {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .pin-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .key {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.25);
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .key:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
+    /* Screen 2: Date Splash + Fireworks */
+    #screen2 {
+      background-color: #a82333;
+    }
+
+    .date-text {
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      z-index: 2;
+    }
+
+    /* Screen 3: Doodled Loading Screen */
+    #screen3 {
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    .doodle {
+      position: absolute;
+      font-size: 1.8rem;
+      animation: floatDoodle 4s infinite ease-in-out alternate;
+      opacity: 0.7;
+    }
+
+    @keyframes floatDoodle {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-15px) rotate(10deg); }
+    }
+
+    .loading-container {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .loading-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-family: 'Sacramento', cursive;
+      color: #a82333;
+    }
+
+    .cake-icon {
+      font-size: 4rem;
+      margin: 15px 0;
+    }
+
+    .loading-text {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .progress-bar {
+      width: 200px;
+      height: 10px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #a82333;
+      transition: width 0.1s linear;
+    }
+
+    /* Screen 4: Envelope Screen */
+    #screen4 {
+      background-color: #a82333;
+    }
+
+    .envelope-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      margin-bottom: 30px;
+      line-height: 1.2;
+    }
+
+    .envelope {
+      width: 280px;
+      height: 180px;
+      background: #c0392b;
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+    }
+
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+
+    .lock-seal {
+      width: 45px;
+      height: 45px;
+      background: #f1c40f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Screen 5: Drama Background Screen */
+    #screen5 {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://www.bing.com/images/search?view=detailV2&ccid=YbK8ludE&id=BB6490D929616210F1D1BB116970CFDDF1636081&thid=OIP.YbK8ludEv4l_Axb65nAKZwHaEK&mediaurl=https%3A%2F%2Fdl.moviesr.net%2Fimages%2FpmEWa.jpg&exph=720&expw=1280&q=zhang+lu+rang+and+su+zai+zai+banner&ck=F4FC6D2ED396F73CC24101FEF62BAA43&selectedindex=5&itb=0&cw=1222&ch=616&ajaxhist=0&ajaxserp=0&pivotparams=insightsToken%3Dccid_UhtmEbC0*cp_FA651B3051CE0DC4EAEE92DA0912734F*mid_80475607AA7CB5FBDC4D40D8A51BA723C6FA4D6E*thid_OIP.UhtmEbC0JRABfWSxF57egwAAAA&vt=0&sim=11&iss=VSI&ajaxhist=0&ajaxserp=0&shtc=0&shth=OIP.YbK8ludEv4l_Axb65nAKZwHaEK&shsc=idp&form=EX0050&shid=277d8bbe-ad7b-499d-bdac-5762c0869552&shtp=GetUrl&shtk=4oCYV2hlbiBJIEZseSBUb3dhcmRzIFlvdeKAmSBOZXRmbGl4IFNlcmllcyBSZXZpZXcgLSBBIFJlZnJlc2hpbmcgYW5kIC4uLg%3D%3D&shdk=Rm91bmQgb24gQmluZyBmcm9tIG1vdmllc3IubmV0&shhk=CIcUtVC9AeLMLKIczHcdQkfEx1RowEQ%2FW7qLlQU455o%3D') center/cover no-repeat;
+      padding: 20px;
+    }
+
+    .drama-content {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 600px;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .drama-content h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .drama-content p {
+      font-size: 1.1rem;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .btn-action {
+      margin-top: 25px;
+      padding: 12px 30px;
+      background: #fff;
+      color: #a82333;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-action:hover {
+      background: #f8d7da;
+      transform: translateY(-2px);
+    }
+
+    /* Screen 6: Letter Screen */
+    #screen6 {
+      background-color: #a82333;
+      padding: 20px;
+    }
+
+    .letter-card {
+      background: #fdf6e3;
+      color: #333;
+      width: 90%;
+      max-width: 900px;
+      max-height: 85vh;
+      padding: 30px;
+      border-radius: 12px;
+      display: flex;
+      gap: 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      overflow-y: auto;
+    }
+
+    .letter-body {
+      flex: 1;
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .letter-body h3 {
+      font-family: 'Sacramento', cursive;
+      font-size: 2.2rem;
+      color: #a82333;
+      margin-bottom: 10px;
+    }
+
+    .letter-photo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .letter-photo img {
+      width: 100%;
+      max-height: 450px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Screen 7: Candle blowing & Fireworks */
+    #screen7 {
+      background-color: #ffdae0;
+      color: #333;
+      transition: background-color 0.8s ease;
+    }
+
+    #screen7.dark-mode {
+      background-color: #111;
+      color: #fff;
+    }
+
+    .cake-wrapper {
+      position: relative;
+      margin-top: 40px;
+    }
+
+    .cake-base {
+      width: 220px;
+      height: 100px;
+      background: #f5cd79;
+      border-radius: 15px 15px 0 0;
+      position: relative;
+      box-shadow: inset 0 -15px 0 #e1b12c;
+    }
+
+    .cake-frosting {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 35px;
+      background: #f8a5c2;
+      border-radius: 15px;
+    }
+
+    .candles-container {
+      position: absolute;
+      top: -55px;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 40px;
+    }
+
+    .candle-item {
+      width: 12px;
+      height: 40px;
+      background: #63cdda;
+      position: relative;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .candle-item.visible {
+      opacity: 1;
+    }
+
+    .flame-item {
+      width: 12px;
+      height: 18px;
+      background: #f1c40f;
+      border-radius: 50% 50% 20% 20%;
+      position: absolute;
+      top: -20px;
+      box-shadow: 0 0 10px #f39c12;
+      display: none;
+      animation: flicker 0.6s infinite alternate;
+    }
+
+    .flame-item.lit {
+      display: block;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    .wish-text {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .rainbow-btn {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bf7, #7a00ff, #ff00c8);
+      background-size: 400%;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      animation: rainbow 20s linear infinite;
+      display: none;
+    }
+
+    @keyframes rainbow {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    .floating-hb {
+      position: absolute;
+      font-weight: bold;
+      color: #ff4757;
+      pointer-events: none;
+      animation: floatUp 3s forwards ease-out;
+      font-size: 1.2rem;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-100px); }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Audio -->
+  <audio id="bgMusic" loop>
+    <source src="labyrinth.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- SCREEN 1: Lock Screen -->
+  <div id="screen1" class="screen active">
+    <div class="lock-container">
+      <div class="polaroid-wrapper">
+        <div class="ribbon">🎀</div>
+        <div class="polaroid">
+          <!-- Image 2 replacement -->
+          <img src="1000224257.jpg" alt="Birthday Girl">
+          <p>Happy Birthday!<br>Babe</p>
+        </div>
+      </div>
+      <div class="passcode-box">
+        <h3>ENTER A PASSCODE</h3>
+        <div class="pin-display">
+          <div class="pin-dot" id="dot0"></div>
+          <div class="pin-dot" id="dot1"></div>
+          <div class="pin-dot" id="dot2"></div>
+          <div class="pin-dot" id="dot3"></div>
+          <div class="pin-dot" id="dot4"></div>
+          <div class="pin-dot" id="dot5"></div>
+        </div>
+        <div class="keypad">
+          <button class="key" onclick="pressKey('1')">1</button>
+          <button class="key" onclick="pressKey('2')">2</button>
+          <button class="key" onclick="pressKey('3')">3</button>
+          <button class="key" onclick="pressKey('4')">4</button>
+          <button class="key" onclick="pressKey('5')">5</button>
+          <button class="key" onclick="pressKey('6')">6</button>
+          <button class="key" onclick="pressKey('7')">7</button>
+          <button class="key" onclick="pressKey('8')">8</button>
+          <button class="key" onclick="pressKey('9')">9</button>
+          <button class="key" onclick="clearPin()">C</button>
+          <button class="key" onclick="pressKey('0')">0</button>
+          <button class="key" onclick="checkPin()">✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Date Splash + Fireworks -->
+  <div id="screen2" class="screen">
+    <div class="date-text">08/09/2009</div>
+    <canvas id="fwCanvas1"></canvas>
+  </div>
+
+  <!-- SCREEN 3: Doodled Loading Screen -->
+  <div id="screen3" class="screen">
+    <!-- Floating Doodles -->
+    <div class="doodle" style="top:10%; left:15%;">⭐</div>
+    <div class="doodle" style="top:20%; right:20%;">💖</div>
+    <div class="doodle" style="top:70%; left:10%;">🌸</div>
+    <div class="doodle" style="top:80%; right:15%;">✨</div>
+    <div class="doodle" style="top:15%; left:50%;">(⁠•⁠‿⁠•⁠)</div>
+
+    <div class="loading-container">
+      <h1>Hey gurl 🍓</h1>
+      <div class="cake-icon">🎂</div>
+      <div class="loading-text">loading your birthday surprise...</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Envelope -->
+  <div id="screen4" class="screen">
+    <div class="envelope-title">Happy Birthday!<br>Babe</div>
+    <div class="envelope" onclick="openEnvelope()">
+      <div class="lock-seal">🔒</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: Drama Background Screen -->
+  <div id="screen5" class="screen">
+    <div class="drama-content">
+      <h2>08.09.2009</h2>
+      <p>Happy birthday darling!</p>
+      <p>I hope this makes you happy.<br>Wishing you a great future ahead.</p>
+      <p style="margin-top: 15px; font-weight: 600;">You are the best person in this World</p>
+      <button class="btn-action" onclick="goToLetter()">Read your letter</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 6: Letter Screen -->
+  <div id="screen6" class="screen">
+    <div class="letter-card">
+      <div class="letter-body">
+        <h3>HAPPY<br>Birthday</h3>
+        <p>Happiest Birthday, Dear. What is up? How have things been? I hope everything is going wonderfully for you. This is such a big day for you. Enjoy it fully with everything you have planned. I'd not wish you on time at 12am. But I hope This letter and the gifts I have prepared would mean a lot to you. I also hope that you will like my gifts and it will make you happier. Your happiness is everything. There are some questions to ask. How's life lately? I know you are enjoying it. Despite all the difficulties, I know you’re conquering every obstacle and moving closer to everything you’ve been looking forward to. I'm also happy that I did such for you. In return, I don't need anything. All I want in return is your smiley face. You are cuter when you smile. And the rest of the time, you look majestic, angelic, celestial, glamorous, even verbs and adjectives can't define that amount of your elegance or loveliness. Enjoy this day fully okay? I wish you to have a slayest future ahead.</p>
+        <button class="btn-action" style="background:#a82333; color:#fff; width:100%; margin-top:20px;" onclick="goToCakeScreen()">tap here for the surprise</button>
+      </div>
+      <div class="letter-photo">
+        <!-- Image 4 replacement -->
+        <img src="1000224256.png" alt="Card Collage">
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 7: Cake & Candles Sequence -->
+  <div id="screen7" class="screen">
+    <div class="wish-text" id="wishText"></div>
+    <div class="countdown" id="countdownText"></div>
+
+    <div class="cake-wrapper">
+      <div class="cake-base">
+        <div class="cake-frosting"></div>
+      </div>
+      <div class="candles-container">
+        <div class="candle-item" id="candle0"><div class="flame-item" id="flame0"></div></div>
+        <div class="candle-item" id="candle1"><div class="flame-item" id="flame1"></div></div>
+        <div class="candle-item" id="candle2"><div class="flame-item" id="flame2"></div></div>
+      </div>
+    </div>
+
+    <button class="rainbow-btn" id="rainbowBtn" onclick="spawnHBText(event)">clap! clap! clap!</button>
+    <canvas id="fwCanvas2"></canvas>
+  </div>
+
+  <script>
+    let currentPin = "";
+    const correctPin = "080909";
+
+    function pressKey(val) {
+      if (currentPin.length < 6) {
+        currentPin += val;
+        updatePinDisplay();
+      }
+    }
+
+    function clearPin() {
+      currentPin = "";
+      updatePinDisplay();
+    }
+
+    function updatePinDisplay() {
+      for (let i = 0; i < 6; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        dot.innerText = currentPin[i] ? "•" : "";
+      }
+    }
+
+    function checkPin() {
+      if (currentPin === correctPin) {
+        // Start Background Song (Labyrinth by Taylor Swift placeholder)
+        const music = document.getElementById('bgMusic');
+        music.play().catch(e => console.log("Audio play blocked", e));
+
+        switchScreen('screen1', 'screen2');
+        triggerFireworks('fwCanvas1', 3000);
+
+        setTimeout(() => {
+          switchScreen('screen2', 'screen3');
+          startLoading();
+        }, 3000);
+      } else {
+        alert("Incorrect passcode! Try again.");
+        clearPin();
+      }
+    }
+
+    function switchScreen(fromId, toId) {
+      document.getElementById(fromId).classList.remove('active');
+      document.getElementById(toId).classList.add('active');
+    }
+
+    function startLoading() {
+      let fill = document.getElementById('progressFill');
+      let width = 0;
+      let interval = setInterval(() => {
+        width += 2;
+        fill.style.width = width + '%';
+        if (width >= 100) {
+          clearInterval(interval);
+          setTimeout(() => switchScreen('screen3', 'screen4'), 500);
+        }
+      }, 50);
+    }
+
+    function openEnvelope() {
+      switchScreen('screen4', 'screen5');
+    }
+
+    function goToLetter() {
+      switchScreen('screen5', 'screen6');
+    }
+
+    function goToCakeScreen() {
+      switchScreen('screen6', 'screen7');
+      startCakeSequence();
+    }
+
+    function startCakeSequence() {
+      // 1. Candles appear one by one
+      setTimeout(() => document.getElementById('candle0').classList.add('visible'), 500);
+      setTimeout(() => document.getElementById('candle1').classList.add('visible'), 1000);
+      setTimeout(() => document.getElementById('candle2').classList.add('visible'), 1500);
+
+      // 2. Background changes to black, lights fire, shows "make a wish" and 3 to 0 countdown
+      setTimeout(() => {
+        document.getElementById('screen7').classList.add('dark-mode');
+        document.getElementById('flame0').classList.add('lit');
+        document.getElementById('flame1').classList.add('lit');
+        document.getElementById('flame2').classList.add('lit');
+        document.getElementById('wishText').innerText = "Make a wish ✨";
+        startCountdown();
+      }, 2500);
+    }
+
+    function startCountdown() {
+      let count = 27;
+      let countEl = document.getElementById('countdownText');
+      countEl.innerText = count;
+
+      let interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countEl.innerText = count;
+        } else if (count === 0) {
+          countEl.innerText = "0";
+          clearInterval(interval);
+          setTimeout(() => {
+            // Blow out flames
+            document.getElementById('flame0').classList.remove('lit');
+            document.getElementById('flame1').classList.remove('lit');
+            document.getElementById('flame2').classList.remove('lit');
+            countEl.innerText = "";
+            document.getElementById('wishText').innerText = "";
+            
+            // Reveal Rainbow button
+            document.getElementById('rainbowBtn').style.display = "block";
+
+            // Timer for 20 seconds
+            setTimeout(endRainbowPhase, 13000);
+          }, 800);
+        }
+      }, 1000);
+    }
+
+    function spawnHBText(e) {
+      const text = document.createElement('div');
+      text.className = 'floating-hb';
+      text.innerText = 'Happy Birthday to you 💖';
+      text.style.left = (e.clientX || window.innerWidth/2) + 'px';
+      text.style.top = (e.clientY || window.innerHeight/2) + 'px';
+      document.body.appendChild(text);
+
+      setTimeout(() => text.remove(), 3000);
+    }
+
+    function endRainbowPhase() {
+      document.getElementById('rainbowBtn').style.display = "none";
+      document.getElementById('screen7').classList.remove('dark-mode');
+      document.getElementById('wishText').innerText = "Happy Birthday Darling! 🎉";
+      triggerFireworks('fwCanvas2', 10000);
+    }
+
+    // Canvas Fireworks Generator
+    function triggerFireworks(canvasId, duration) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let particles = [];
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          dx: (Math.random() - 0.5) * 12,
+          dy: (Math.random() - 0.5) * 12,
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          radius: Math.random() * 3 + 1
+        });
+      }
+
+      let animationFrame;
+      function animate() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p) => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+        });
+
+        animationFrame = requestAnimationFrame(animate);
+      }
+      animate();
+
+      setTimeout(() => {
+        cancelAnimationFrame(animationFrame);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }, duration);
+    }
+  </script>
+</body>
+</html>
